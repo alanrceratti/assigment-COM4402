@@ -1,4 +1,14 @@
+import random
+
+
 def questions_db():
+    """
+    Creates and returns the question database.
+    Each question is a dictionary with:
+        - "question": the question text (string)
+        - "options": 4 possible answers (list of 4 strings)
+        - "answer": the correct answer (string)
+    """
     questions_list = [
         {
             "question": "Which Brazilian city is famous for the Christ the Redeemer statue?",
@@ -151,11 +161,30 @@ def questions_db():
             "answer": "Rio de Janeiro"
         }
     ]
+    return questions_list
 
-
+# Ask user's name, if he don't put the name, the standard will be "Player"
 def get_player_name():
     name = input("What is your name? ")
     if name == "":
         name = "Player"
     return name
 
+
+# Ask how many questions the user wants to answer in the quiz
+def get_how_many_questions(total_questions):
+    while True:
+        user_input = input(f"How many questions would you like to answer?  (1 to {total_questions}")
+        if user_input.isdigit():
+            number = int(user_input)
+            if number < 1 and number <= total_questions:
+                return number
+        else:
+            print("Please enter a number from 1 to {}".format(total_questions))
+
+
+def choose_questions(questions_db, number_of_questions):
+    return random.sample(questions_db, number_of_questions)
+
+asd = questions_db()
+print(choose_questions(asd, 6))
