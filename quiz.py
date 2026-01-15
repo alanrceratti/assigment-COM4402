@@ -174,17 +174,33 @@ def get_player_name():
 # Ask how many questions the user wants to answer in the quiz
 def get_how_many_questions(total_questions):
     while True:
-        user_input = input(f"How many questions would you like to answer?  (1 to {total_questions}")
+        user_input = input(f"How many questions would you like to answer?  (1 to {total_questions}) ")
         if user_input.isdigit():
             number = int(user_input)
-            if number < 1 and number <= total_questions:
+            if number >= 1 and number <= total_questions:
                 return number
+            else:
+                print("Please enter a number from 1 to {}".format(total_questions))
         else:
-            print("Please enter a number from 1 to {}".format(total_questions))
+            print("Please enter a valid number")
 
 
 def choose_questions(questions_db, number_of_questions):
     return random.sample(questions_db, number_of_questions)
 
-asd = questions_db()
-print(choose_questions(asd, 6))
+#make question and answers random from the random list (choose_questions)
+def randomize():
+    return
+
+#display the question for the user, one at time
+def display_question():
+    return
+
+#get user answer
+def user_answer():
+    return
+
+
+
+
+#show result, run the quiz,
