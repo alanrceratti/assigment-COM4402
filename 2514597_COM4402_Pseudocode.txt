@@ -1,0 +1,194 @@
+STUDENT NUMBER: 2514597
+STUDENT NAME:   ALAN ROGERIO CERATTI
+MODULE CODE:    COM4402
+MODULE TITLE:   Programming
+ASSIGNMENT:     Quiz Program Pseudocode (15% of module grade)
+================================================================================
+
+*** IMPORTANT SUBMISSION INSTRUCTIONS ***
+
+SAVE THIS FILE AS: YOUR_STUDENTNUMBER_COM4402_Pseudocode.txt
+Example: 2514597_COM4402_Pseudocode.txt
+
+Submit ONLY to the PSEUDOCODE Moodle submission link (NOT flowchart link).
+
+Requirements Checklist - Tick when complete:
+[V] Describes ALL 8 required components from assignment brief
+[V] Uses proper indentation for program structure
+[V] Written in plain English (no programming language syntax)
+[V] Data structures explicitly named (LIST, TUPLE, etc.)
+[V] File saved as .txt format (not Word/PDF)
+[V] Correct filename format used
+
+*** PROGRAM FLOW DESCRIPTION ***
+
+1. INITIALISATION
+   - Create lists to store quiz questions, multiple choice options, and correct answers
+   - Set score variable to zero
+   - Set question counter to start position
+
+2. MAIN PROGRAM LOOP
+   - Continue until all questions have been presented
+
+3. QUESTION PRESENTATION
+   - Display current question to user
+   - Show all four multiple choice options (A, B, C, D)
+
+4. USER INPUT
+   - Accept student's answer choice from keyboard
+
+5. ANSWER VALIDATION
+   - Compare user's selection against stored correct answer
+   - Decision: is answer correct or incorrect?
+
+6. SCORING PROCESS
+   - If correct: increment score by 1
+   - Display feedback message (correct/incorrect)
+
+7. ITERATION
+   - Move to next question in sequence
+   - Return to step 3 until loop completes
+
+8. PROGRAM TERMINATION
+   - Display final score out of total questions
+   - Calculate and show percentage score
+   - End program
+
+*** PSEUDOCODE STARTS BELOW THIS LINE ***
+
+#1. INITIALISATION
+BEGIN    
+    SET questions TO LIST OF TUPLES:
+        ("Which Brazilian city is famous for the Christ the Redeemer statue?",
+         ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador"],
+         1),
+        ("Brazil is known for having the largest Japanese community outside Japan. " +
+         "In which city is this community historically most concentrated?",
+         ["Curitiba", "Manaus", "São Paulo", "Recife"],
+         2),
+        ("The largest tropical rainforest in the world passes through Brazil. " +
+         "Approximately what percentage of the Amazon Rainforest is in Brazilian territory?",
+         ["20%", "60%", "40%", "80%"],
+         1),
+        ("Which of these Brazilian festivals is world-famous and attracts " +
+         "millions of tourists every year?",
+         ["Festa do Peão de Barretos",
+          "São João de Campina Grande",
+          "Rio de Janeiro Carnival",
+          "Oktoberfest of Blumenau"],
+         2),
+        ("Feijoada is considered one of the most famous traditional Brazilian dishes. " +
+         " What is the main ingredient of this dish?",
+         ["Chicken",
+          "Fish",
+ 	  "Rice and vegetables",
+          "Beef and pork with black beans"],         
+         3),
+	("Although Rio de Janeiro is famous, it is not the capital. What is the current capital " +
+	 "city of Brazil?",
+   	 ["Buenos Aires", "Brasília", "Rio de Janeiro", "Salvador"],
+   	 1),
+
+  	("Brazil is the only country in South America where this language is the official one. " + 
+	 "Which language is it?",
+ 	 ["Spanish", "English", "Portuguese", "French"],
+ 	 2),
+
+ 	("Brazil is the most successful national team in the FIFA World Cup history. How many " +
+	 "times have they won the tournament?",
+ 	 ["3 times", "4 times", "5 times", "6 times"],
+  	 2),
+
+ 	("The Iguazu Falls are a massive waterfall system located on the border between Brazil " +	
+	 " and which other country?",
+ 	 ["Argentina", "Venezuela", "Colombia", "Peru"],
+  	 0),
+
+   	("What is the name of the official currency currently used in Brazil?",
+  	 ["Peso", "Real", "Dollar", "Escudo"],
+  	 1)
+
+
+    SET count TO 0
+    SET score TO 0
+    SET total_questions_in_db TO LENHGT(questions)
+    SET questions_to_ask TO 5
+
+    IF total_questions_in_db < questions_to_ask THEN
+        SET questions_to_ask TO total_questions_in_db
+    ENDIF
+
+    SET selected_indices TO GET_UNIQUE_RANDOM_NUMBERS(
+                                amount: questions_to_ask, 
+                                min: 0, 
+                                max: total_questions_in_db - 1)
+
+    OUTPUT "Welcome to the Brazil quiz!"
+    OUTPUT "You will answer " + questions_to_ask + " questions."
+    
+    INPUT "What is your name?"
+
+
+#2. MAIN PROGRAM LOOP
+    WHILE count < questions_to_ask DO
+
+        SET current_question TO questions[selected_indices[count]]
+        SET question_text TO current_question.question_text
+        SET options_list TO current_question.options_list
+        SET correct_index TO current_question.correct_index
+
+
+#3. QUESTION PRESENTATION
+        OUTPUT "Question " + (count + 1) + ": " + question_text
+
+        OUTPUT "A) " + options_list[0]
+        OUTPUT "B) " + options_list[1]
+        OUTPUT "C) " + options_list[2]
+        OUTPUT "D) " + options_list[3]
+
+        OUTPUT "Please enter your answer (A, B, C, or D): "
+
+
+#4. USER INPUT
+        INPUT user_answer
+
+
+#5. ANSWER VALIDATION
+        IF user_answer == "A" OR user_answer == "a" THEN
+            SET user_index TO 0
+        ELSE IF user_answer == "B" OR user_answer == "b" THEN
+            SET user_index TO 1
+        ELSE IF user_answer == "C" OR user_answer == "c" THEN
+            SET user_index TO 2
+        ELSE IF user_answer == "D" OR user_answer == "d" THEN
+            SET user_index TO 3
+        ELSE
+            OUTPUT "Invalid answer. This question will be marked as incorrect."
+            SET user_index TO -1
+        ENDIF
+
+
+#6. SCORING PROCESS
+        IF user_index == correct_index THEN
+            SET score TO score + 1     
+        ENDIF
+
+
+#7. ITERATION
+        SET count TO count + 1
+
+    ENDWHILE
+
+
+#8. PROGRAM TERMINATION
+    SET percentage TO (score / questions_to_ask) * 100
+
+     
+    OUTPUT "Quiz finished."
+    OUTPUT "Your final score was: " + score + " out of " + questions_to_ask + "."
+    OUTPUT "Percentage: " + percentage + "%" + "correct."
+
+
+
+END
+
