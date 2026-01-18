@@ -1,16 +1,18 @@
 import random
 
+# Labels used for multiple-choice answers
 LABELS = ["A", "B", "C", "D"]
-display_correct_incorrect = False
+
+# Global variable that stores if user wants feedback after each question
 
 
 def questions_db():
     """
-    Creates and returns the question database.
-    Each question is a dictionary with:
-        - "question": the question text (string)
-        - "options": 4 possible answers (list of 4 strings)
-        - "answer": the correct answer (string)
+      Creates and returns the question database.
+      Each question is a dictionary with:
+          - "question": the question text (string)
+          - "options": 4 possible answers (list of 4 strings)
+          - "answer": the correct answer (string)
     """
     questions_list = [
         {
@@ -178,18 +180,16 @@ def get_player_name():
 
 
 def get_if_player_want_answer():
-    global display_correct_incorrect
 
     answer = input(
         "Would you like to know if you got a correct or incorrect answer after each question \nor only check the result in the end? (1 for YES or 2 to check In the end? ")
 
     while True:
         if answer == "1":
-            display_correct_incorrect = True
-            return display_correct_incorrect
+            return True
+
         elif answer == "2":
-            display_correct_incorrect = False
-            return display_correct_incorrect
+            return False
         else:
             answer =  input("Invalid choice, try again, 1 for YES or 2 to check In the end. ")
 
@@ -212,10 +212,10 @@ def choose_questions(questions_db, number_of_questions):
     sample = random.sample(questions_db, number_of_questions)
     return sample
 
-#make question and answers random from the random list (choose_questions)
-def randomize(list_of_questions):
-    random.shuffle(list_of_questions)
-    return list_of_questions
+#make answers random from the random list (choose_questions)
+def randomize(list):
+    random.shuffle(list)
+    return list
 
 def user_answer():
     while True:
@@ -256,7 +256,7 @@ def display_question(question_dict, amount, display_correct_incorrect):
 
 
 
-def is_correct(questions, display_correct_incorrect):
+def quiz_start(questions, display_correct_incorrect):
     score = 0
 
     for i, question in enumerate(questions, 1):
@@ -266,6 +266,7 @@ def is_correct(questions, display_correct_incorrect):
 
 
 def main():
+
     questions = questions_db()
     print("Welcome to the Brazilian Quiz!")
 
@@ -273,9 +274,9 @@ def main():
     display_correct_incorrect = get_if_player_want_answer()
     how_many = get_how_many_questions(len(questions))
     questions_to_ask = choose_questions(questions, how_many)
-    randomize_questions = randomize(questions_to_ask)
 
-    score = is_correct(randomize_questions, display_correct_incorrect)
+
+    score = quiz_start(questions_to_ask, display_correct_incorrect)
 
     percent = (score / how_many) * 100
     print("\n============================")
@@ -287,7 +288,7 @@ def main():
 
 
     while True:
-        play_again = input("Would you like to play again? (1 for YES or 2 to END? )")
+        play_again = input("Would you like to play again? (1 for YES or 2 to END?) ")
         if play_again == "1":
             main()
         elif play_again == "2":
