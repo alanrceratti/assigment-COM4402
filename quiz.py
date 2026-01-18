@@ -235,13 +235,14 @@ def display_answer(display_correct_incorrect, user_choice, correct_choice):
 
 
 #display the question for the user, one at time
-def display_question(question, number):
+def display_question(question_dict, amount, display_correct_incorrect):
     print("\n...........................")
-    print(f"Question: {number}: {question['question']}")
+    print("\n")
+    print(f"Question: {amount}: {question_dict['question']}")
 
-    options = randomize(question['options'])
+    options = randomize(question_dict['options'])
 
-    correct_index = options.index(question['answer'])
+    correct_index = options.index(question_dict['answer'])
     correct_letter = LABELS[correct_index]
 
     for i in range(len(LABELS)):
@@ -251,13 +252,15 @@ def display_question(question, number):
 
     display_answer(display_correct_incorrect, choice, correct_letter)
 
+    return choice == correct_letter
 
 
-def is_correct(questions):
+
+def is_correct(questions, display_correct_incorrect):
     score = 0
 
     for i, question in enumerate(questions, 1):
-        if display_answer(question, i):
+        if display_question(question, i, display_correct_incorrect):
             score += 1
     return score
 
@@ -271,9 +274,27 @@ def main():
     how_many = get_how_many_questions(len(questions))
     questions_to_ask = choose_questions(questions, how_many)
     randomize_questions = randomize(questions_to_ask)
-    for i in range(len(randomize_questions)):
-        display_question(randomize_questions[i], i + 1)
-    score = is_correct(randomize_questions)
+
+    score = is_correct(randomize_questions, display_correct_incorrect)
+
+    percent = (score / how_many) * 100
+    print("\n============================")
+    print("Quiz finished!")
+    print(f"{name}, your score: {score} out of {how_many}")
+    print(f"Percentage: {percent:.2f}%")
+    print("============================")
+    print("\n")
+
+
+    while True:
+        play_again = input("Would you like to play again? (1 for YES or 2 to END? )")
+        if play_again == "1":
+            main()
+        elif play_again == "2":
+            break
+        else:
+            print("Please enter a valid answer")
+
 
 main()
 
