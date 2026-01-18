@@ -178,7 +178,7 @@ def get_player_name():
         name = "Player"
     return name
 
-
+# Ask if the user want to see if his answer was correct or incorrect after answer the question or only in the end
 def get_if_player_want_answer():
 
     answer = input(
@@ -207,16 +207,18 @@ def get_how_many_questions(total_questions):
         else:
             print("Please enter a valid number")
 
-
+# Choose random questions from the DB according to the number entered by user
 def choose_questions(questions_db, number_of_questions):
     sample = random.sample(questions_db, number_of_questions)
     return sample
 
-#make answers random from the random list (choose_questions)
-def randomize(list):
-    random.shuffle(list)
-    return list
 
+# Make answers random from the random list (choose_questions)
+def randomize(answer_list):
+    random.shuffle(answer_list)
+    return answer_list
+
+# Ask the user for A/B/C/D and keep asking until it is valid.
 def user_answer():
     while True:
         choice = input(f"Your answer (A, B, C, or D): ").upper()
@@ -225,6 +227,7 @@ def user_answer():
         print("Invalid. Please enter a valid answer")
     return
 
+# If user chose to see the answer after each question, this function will show the answer
 def display_answer(display_correct_incorrect, user_choice, correct_choice):
     if display_correct_incorrect:
         if user_choice == correct_choice:
@@ -255,7 +258,7 @@ def display_question(question_dict, amount, display_correct_incorrect):
     return choice == correct_letter
 
 
-
+# Runs through all questions, counts how many are correct, and returns the score
 def quiz_start(questions, display_correct_incorrect):
     score = 0
 
