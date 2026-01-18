@@ -164,12 +164,39 @@ def questions_db():
     ]
     return questions_list
 
+
+def display_answer(state, answer):
+    if state:
+        print(f"You answered {answer} is {"correct" if state else "incorrect"}")
+    return
+
 # Ask user's name, if he don't put the name, the standard will be "Player"
 def get_player_name():
     name = input("What is your name? ")
     if name == "":
         name = "Player"
     return name
+
+display_correct_incorrect = False
+
+def get_if_player_want_answer():
+
+
+    answer = input(
+        "Would you like to know if you got a correct or incorrect answer after each question \nor only check the result in the end? (1 for YES or 2 to check In the end? ")
+
+
+    while True:
+        if answer == "1":
+            display_correct_incorrect = True
+            return display_correct_incorrect
+        elif answer == "2":
+            display_correct_incorrect = False
+            return display_correct_incorrect
+        else:
+            answer =  input("Invalid choice, try again, 1 for YES or 2 to check In the end. ")
+        print(display_correct_incorrect)
+
 
 
 # Ask how many questions the user wants to answer in the quiz
@@ -203,6 +230,10 @@ def user_answer():
         print("Invalid. Please enter a valid answer")
     return
 
+def questions_list():
+    return
+
+
 
 #display the question for the user, one at time
 def display_question(question, number):
@@ -217,17 +248,7 @@ def display_question(question, number):
 
     choice = user_answer()
     user_index = LABELS.index(choice)
-
-
-    return
-
-list = {  "question": "What is a common Brazilian drink made from sugar cane?",
-            "options": ["Tea", "Cachaça", "Milk", "Orange Juice"],
-            "answer": "Cachaça"}
-
-asd = display_question(list, 4)
-print(asd)
-
+    display_answer(display_correct_incorrect, choice)
 
 
 
@@ -236,9 +257,13 @@ def main():
     print("Welcome to the Brazilian Quiz!")
 
     name = get_player_name()
+    display_correct_incorrect = get_if_player_want_answer()
     how_many = get_how_many_questions(len(questions))
     questions_to_ask = choose_questions(questions, how_many)
     randomize_questions = randomize(questions_to_ask)
-    display_question()
+    for i in range(len(randomize_questions)):
+        display_question(randomize_questions[i], i + 1)
+
+main()
 
 
