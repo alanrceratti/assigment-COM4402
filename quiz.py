@@ -1,5 +1,6 @@
 import random
 
+LABELS = ["A", "B", "C", "D"]
 
 def questions_db():
     """
@@ -194,19 +195,39 @@ def randomize(list_of_questions):
     random.shuffle(list_of_questions)
     return list_of_questions
 
+def user_answer():
+    while True:
+        choice = input(f"Your answer (A, B, C, or D): ").upper()
+        if choice in LABELS:
+            return choice
+        print("Invalid. Please enter a valid answer")
+    return
 
 
 #display the question for the user, one at time
 def display_question(question, number):
     print("\n...........................")
-    # print(f"Question: {number}: {question['question']}")
+    print(f"Question: {number}: {question['question']}")
+
+    options = randomize(question['options'])
+    correct_index = options.index(question['answer'])
+
+    for i in range(len(LABELS)):
+        print(f"{LABELS[i]}: {options[i]}")
+
+    choice = user_answer()
+    user_index = LABELS.index(choice)
+
+
     return
 
+list = {  "question": "What is a common Brazilian drink made from sugar cane?",
+            "options": ["Tea", "Cachaça", "Milk", "Orange Juice"],
+            "answer": "Cachaça"}
 
+asd = display_question(list, 4)
+print(asd)
 
-#get user answer
-def user_answer():
-    return
 
 
 
@@ -217,7 +238,7 @@ def main():
     name = get_player_name()
     how_many = get_how_many_questions(len(questions))
     questions_to_ask = choose_questions(questions, how_many)
+    randomize_questions = randomize(questions_to_ask)
+    display_question()
 
 
-
-main()
