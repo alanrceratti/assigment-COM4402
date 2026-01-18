@@ -1,6 +1,8 @@
 import random
 
 LABELS = ["A", "B", "C", "D"]
+display_correct_incorrect = False
+
 
 def questions_db():
     """
@@ -165,10 +167,7 @@ def questions_db():
     return questions_list
 
 
-def display_answer(state, answer):
-    if state:
-        print(f"You answered {answer} is {"correct" if state else "incorrect"}")
-    return
+
 
 # Ask user's name, if he don't put the name, the standard will be "Player"
 def get_player_name():
@@ -177,14 +176,12 @@ def get_player_name():
         name = "Player"
     return name
 
-display_correct_incorrect = False
 
 def get_if_player_want_answer():
-
+    global display_correct_incorrect
 
     answer = input(
         "Would you like to know if you got a correct or incorrect answer after each question \nor only check the result in the end? (1 for YES or 2 to check In the end? ")
-
 
     while True:
         if answer == "1":
@@ -195,8 +192,6 @@ def get_if_player_want_answer():
             return display_correct_incorrect
         else:
             answer =  input("Invalid choice, try again, 1 for YES or 2 to check In the end. ")
-        print(display_correct_incorrect)
-
 
 
 # Ask how many questions the user wants to answer in the quiz
@@ -230,8 +225,12 @@ def user_answer():
         print("Invalid. Please enter a valid answer")
     return
 
-def questions_list():
-    return
+def display_answer(display_correct_incorrect, user_choice, correct_choice):
+    if display_correct_incorrect:
+        if user_choice == correct_choice:
+            print(f"Your answer {user_choice} was correct")
+        else:
+            print(f"Your answer {user_choice} was NOT correct")
 
 
 
@@ -241,15 +240,26 @@ def display_question(question, number):
     print(f"Question: {number}: {question['question']}")
 
     options = randomize(question['options'])
+
     correct_index = options.index(question['answer'])
+    correct_letter = LABELS[correct_index]
 
     for i in range(len(LABELS)):
         print(f"{LABELS[i]}: {options[i]}")
 
     choice = user_answer()
-    user_index = LABELS.index(choice)
-    display_answer(display_correct_incorrect, choice)
 
+    display_answer(display_correct_incorrect, choice, correct_letter)
+
+
+
+def is_correct(questions):
+    score = 0
+
+    for i, question in enumerate(questions, 1):
+        if display_answer(question, i):
+            score += 1
+    return score
 
 
 def main():
@@ -263,6 +273,7 @@ def main():
     randomize_questions = randomize(questions_to_ask)
     for i in range(len(randomize_questions)):
         display_question(randomize_questions[i], i + 1)
+    score = is_correct(randomize_questions)
 
 main()
 
