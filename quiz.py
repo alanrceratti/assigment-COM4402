@@ -186,15 +186,23 @@ def get_how_many_questions(total_questions):
 
 
 def choose_questions(questions_db, number_of_questions):
-    return random.sample(questions_db, number_of_questions)
+    sample = random.sample(questions_db, number_of_questions)
+    return sample
 
 #make question and answers random from the random list (choose_questions)
-def randomize():
-    return
+def randomize(list_of_questions):
+    random.shuffle(list_of_questions)
+    return list_of_questions
+
+
 
 #display the question for the user, one at time
-def display_question():
+def display_question(question, number):
+    print("\n...........................")
+    # print(f"Question: {number}: {question['question']}")
     return
+
+
 
 #get user answer
 def user_answer():
@@ -202,5 +210,14 @@ def user_answer():
 
 
 
+def main():
+    questions = questions_db()
+    print("Welcome to the Brazilian Quiz!")
 
-#show result, run the quiz,
+    name = get_player_name()
+    how_many = get_how_many_questions(len(questions))
+    questions_to_ask = choose_questions(questions, how_many)
+
+
+
+main()
