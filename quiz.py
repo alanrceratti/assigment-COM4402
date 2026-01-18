@@ -203,7 +203,7 @@ def get_how_many_questions(total_questions):
             if number >= 1 and number <= total_questions:
                 return number
             else:
-                print("Please enter a number from 1 to {}".format(total_questions))
+                print(f"Please enter a number from 1 to {total_questions}")
         else:
             print("Please enter a valid number")
 
@@ -248,16 +248,16 @@ def display_question(question_dict, amount, display_correct_incorrect):
     options = randomize(question_dict['options'])
 
     correct_index = options.index(question_dict['answer'])
-    correct_letter = LABELS[correct_index]
+    correct_label = correct_index + 1
 
     for i in range(len(LABELS)):
         print(f"{LABELS[i]}: {options[i]}")
 
     choice = user_answer()
 
-    display_answer(display_correct_incorrect, choice, correct_letter)
+    display_answer(display_correct_incorrect, choice, correct_label)
 
-    return choice == correct_letter
+    return choice == correct_label
 
 
 # Runs through all questions, counts how many are correct, and returns the score
