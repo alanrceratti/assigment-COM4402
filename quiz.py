@@ -1,7 +1,7 @@
 import random
 
 # Labels used for multiple-choice answers
-LABELS = ["A", "B", "C", "D"]
+LABELS = [1, 2, 3, 4]
 
 # Global variable that stores if user wants feedback after each question
 
@@ -218,12 +218,14 @@ def randomize(answer_list):
     random.shuffle(answer_list)
     return answer_list
 
-# Ask the user for A/B/C/D and keep asking until it is valid.
+# Ask the user for 1/2/3/4 and keep asking until it is valid.
 def user_answer():
     while True:
-        choice = input(f"Your answer (A, B, C, or D): ").upper()
-        if choice in LABELS:
-            return choice
+        choice = input(f"Your answer (1, 2, 3, or 4): ")
+        if choice.isdigit():
+            choice = int(choice)
+            if choice in LABELS:
+                return choice
         print("Invalid. Please enter a valid answer")
     return
 
