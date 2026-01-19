@@ -4,9 +4,7 @@ import random
 LABELS = [1, 2, 3, 4]
 
 
-
-
-def questions_db():
+def load_questions_db():
     """
       Creates and returns the question database.
       Each question is a dictionary with:
@@ -32,7 +30,8 @@ def questions_db():
         },
         {
             "question": "Which festival is world-famous and attracts millions of tourists every year?",
-            "options": ["Festa do Peão de Barretos", "São João de Campina Grande", "Rio de Janeiro Carnival", "Oktoberfest of Blumenau"],
+            "options": ["Festa do Peão de Barretos", "São João de Campina Grande", "Rio de Janeiro Carnival",
+                        "Oktoberfest of Blumenau"],
             "answer": "Rio de Janeiro Carnival"
         },
         {
@@ -169,8 +168,6 @@ def questions_db():
     return questions_list
 
 
-
-
 # Ask user's name, if he don't put the name, the standard will be "Player"
 def get_player_name():
     name = input("What is your name? ")
@@ -178,9 +175,9 @@ def get_player_name():
         name = "Player"
     return name
 
+
 # Ask if the user want to see if his answer was correct or incorrect after answer the question or only in the end
 def get_if_player_want_answer():
-
     answer = input(
         "Would you like to know if you got a correct or incorrect answer after each question \nor only check the result in the end? (1 for YES or 2 to check In the end? ")
 
@@ -191,32 +188,34 @@ def get_if_player_want_answer():
         elif answer == "2":
             return False
         else:
-            answer =  input("Invalid choice, try again, 1 for YES or 2 to check In the end. ")
+            answer = input("Invalid choice, try again, 1 for YES or 2 to check In the end. ")
 
 
 # Ask how many questions the user wants to answer in the quiz
-def get_how_many_questions(total_questions):
+def set_max_quesitons(total_questions):
     while True:
         user_input = input(f"How many questions would you like to answer?  (1 to {total_questions}) ")
         if user_input.isdigit():
             number = int(user_input)
-            if number >= 1 and number <= total_questions:
+            if 1 <= number <= total_questions:
                 return number
             else:
                 print(f"Please enter a number from 1 to {total_questions}")
         else:
             print("Please enter a valid number")
 
+
 # Choose random questions from the DB according to the number entered by user
-def choose_questions(questions_db, number_of_questions):
-    sample = random.sample(questions_db, number_of_questions)
-    return sample
+def create_random_subset(questions_db, number_of_questions):
+    randomized_subset = random.sample(questions_db, number_of_questions)
+    return randomized_subset
 
 
 # Make answers random from the random list (choose_questions)
 def randomize(answer_list):
     random.shuffle(answer_list)
     return answer_list
+
 
 # Ask the user for 1/2/3/4 and keep asking until it is valid.
 def user_answer():
@@ -229,6 +228,7 @@ def user_answer():
         print("Invalid. Please enter a valid answer")
     return
 
+
 # If user chose to see the answer after each question, this function will show the answer
 def display_answer(display_correct_incorrect, user_choice, correct_choice):
     if display_correct_incorrect:
@@ -238,12 +238,11 @@ def display_answer(display_correct_incorrect, user_choice, correct_choice):
             print(f"Your answer {user_choice} was NOT correct")
 
 
-
-#display the question for the user, one at time
-def display_question(question_dict, amount, display_correct_incorrect):
+# display the question for the user, one at time
+def handle_question_processing(question_dict, question_index, display_correct):
     print("\n...........................")
     print("\n")
-    print(f"Question: {amount}: {question_dict['question']}")
+    print(f"Question: {question_index}: {question_dict['question']}")
 
     options = randomize(question_dict['options'])
 
@@ -255,53 +254,52 @@ def display_question(question_dict, amount, display_correct_incorrect):
 
     choice = user_answer()
 
-    display_answer(display_correct_incorrect, choice, correct_label)
+    display_answer(display_correct, choice, correct_label)
 
     return choice == correct_label
 
 
 # Runs through all questions, counts how many are correct, and returns the score
-def quiz_start(questions, display_correct_incorrect):
+def quiz_start(questions, display_correct):
     score = 0
 
     for i, question in enumerate(questions, 1):
-        if display_question(question, i, display_correct_incorrect):
+        if handle_question_processing(question, i, display_correct):
             score += 1
     return score
 
 
 def main():
-
-    questions = questions_db()
-    print("Welcome to the Holton College Quiz about Brazil")
-
-    name = get_player_name()
-    display_correct_incorrect = get_if_player_want_answer()
-    how_many = get_how_many_questions(len(questions))
-    questions_to_ask = choose_questions(questions, how_many)
-
-
-    score = quiz_start(questions_to_ask, display_correct_incorrect)
-
-    percent = (score / how_many) * 100
-    print("\n============================")
-    print("Quiz finished!")
-    print(f"{name}, your score: {score} out of {how_many}")
-    print(f"Percentage: {percent:.2f}%")
-    print("============================")
-    print("\n")
-
-
     while True:
-        play_again = input("Would you like to play again? (1 for YES or 2 to END?) ")
-        if play_again == "1":
-            main()
-        elif play_again == "2":
-            break
-        else:
-            print("Please enter a valid answer")
+        questions_database = load_questions_db()
+        print("Welcome to the Holton College Quiz about Brazil")
+
+        name = get_player_name()
+        display_correct = get_if_player_want_answer()
+        quiz_length = set_max_quesitons(len(questions_database))
+        randomized_question_bank = create_random_subset(questions_database, quiz_length)
+
+        score = quiz_start(randomized_question_bank, display_correct)
+
+        percent = (score / quiz_length) * 100
+        print("\n============================")
+        print("Quiz finished!")
+        print(f"{name}, your score: {score} out of {quiz_length}")
+        print(f"Percentage: {percent:.2f}%")
+        print("============================")
+        print("\n")
+
+        play_again = int(input("Would you like to play again? (1 for YES or 2 to END?) "))
+        while play_again not in [1, 2]:
+            play_again = int(input("Invalid input. Enter 1 or 2: "))
+
+        if play_again == 1:
+            continue
+            # main()
+        elif play_again == 2:
+            print("Thank you for playing the quiz. EXIT SELECTED!")
+            exit(0)
 
 
 main()
-
 
