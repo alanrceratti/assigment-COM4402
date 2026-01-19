@@ -3,7 +3,7 @@ import random
 # Labels used for multiple-choice answers
 LABELS = [1, 2, 3, 4]
 
-# Global variable that stores if user wants feedback after each question
+
 
 
 def questions_db():
