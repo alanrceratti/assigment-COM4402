@@ -273,7 +273,7 @@ def quiz_start(questions, display_correct_incorrect):
 def main():
 
     questions = questions_db()
-    print("Welcome to the Brazilian Quiz!")
+    print("Welcome to the Holton College Quiz about Brazil")
 
     name = get_player_name()
     display_correct_incorrect = get_if_player_want_answer()
